@@ -2,7 +2,17 @@
 
 Purdue Comminity App is a forum for Purdue Students to discuss all kinds of topics.
 
-# Built with flutter
+# Current Stage
+## What has been done:
+  * Forum page frontend,
+  * Setting page frontend(barebone)
+## What is not done:
+  * Create new post page
+  * Post detail page
+  * Home page
+## Previews
+
+## Built with flutter
 
 ## Getting Started
 
