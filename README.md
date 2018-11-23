@@ -11,6 +11,17 @@ Purdue Comminity App is a forum for Purdue Students to discuss all kinds of topi
   * Post detail page
   * Home page
 ## Previews
+### Post Page
+<img src="https://raw.githubusercontent.com/cty123/Purdue-Community-App/master/docs/Screenshot_1542856469.png" width="300">
+
+### Setting Page
+<img src="https://raw.githubusercontent.com/cty123/Purdue-Community-App/master/docs/Screenshot_1542953812.png" width="300">
+
+### Home Page
+<img src="https://raw.githubusercontent.com/cty123/Purdue-Community-App/master/docs/Screenshot_1542953820.png" width="300">
+
+### Post Loading Page
+<img src="https://raw.githubusercontent.com/cty123/Purdue-Community-App/master/docs/Screenshot_1542953824.png" width="300">
 
 ## Built with flutter
 
