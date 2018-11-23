@@ -1,6 +1,8 @@
-# hello_world
+# Purdue Comminity App
 
-A new Flutter project.
+Purdue Comminity App is a forum for Purdue Students to discuss all kinds of topics.
+
+# Built with flutter
 
 ## Getting Started
 
