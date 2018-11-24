@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/post.dart';
 import 'package:zefyr/zefyr.dart';
+import 'package:hello_world/screens/posteditpage.dart';
+import 'package:hello_world/screens/postcommentpage.dart';
 import 'package:hello_world/components/postdetail.dart';
+import 'package:hello_world/components/popmenuitem.dart';
 import 'dart:convert';
 
 class PostDetail extends StatefulWidget {
   final Post post;
+
+  final List<PopMenuItem> _pop_options = [
+    new PopMenuItem(Icon(Icons.add), 'Add Comment'),
+    new PopMenuItem(Icon(Icons.edit), 'Edit'),
+    new PopMenuItem(Icon(Icons.comment), 'View Comments')
+  ];
 
   PostDetail(this.post);
 
@@ -27,13 +36,33 @@ class _PostDetail extends State<PostDetail> {
     _focusNode = new FocusNode();
   }
 
+  void _menu_action(PopMenuItem item) {
+    switch(item.text) {
+      case 'Add Comment':
+        Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (ctx) => new PostCommentPage(widget.post)
+              )
+            );
+        break;
+      case 'Edit':
+        Navigator.of(context).push(
+              new MaterialPageRoute(
+                builder: (ctx) => new PostEditPage(widget.post)
+              )
+            );
+        break;
+      case 'View Comment': 
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: new AppBar(
         title: Row(children: <Widget>[
-          new Text('${widget.post.title}'),
+          new Text('Author: ${widget.post.user.username}'),
           // new IconButton(
           //   icon: Icon(Icons.touch_app),
           //   onPressed: (){
@@ -47,14 +76,23 @@ class _PostDetail extends State<PostDetail> {
           // )
         ],),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.control_point), onPressed: null,),
-          IconButton(icon: Icon(Icons.edit), onPressed: null,),
-          IconButton(icon: Icon(Icons.comment), onPressed: null,),
+          new PopupMenuButton<PopMenuItem>(
+              icon: Icon(Icons.add), // overflow menu
+              onSelected: _menu_action,
+              itemBuilder: (BuildContext context) {
+                return widget._pop_options.map((PopMenuItem item) {
+                  return PopupMenuItem<PopMenuItem>(
+                    child: item,
+                    value: item,
+                  );
+                }).toList();
+              }
+            ),
         ]
       ),
 
-      body: ZefyrScaffold(
-        child: new Card(
+      body: new Card(
+        child: ZefyrScaffold(
           child: ZefyrEditor(
             enabled: true,
             controller: _controller,
