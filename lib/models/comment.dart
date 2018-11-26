@@ -2,7 +2,7 @@ import 'package:hello_world/models/user.dart';
 
 class Comment {
   User user;
-  String comment;
+  String content;
 
-  Comment(this.user, this.comment);
+  Comment(this.user, this.content);
 }
