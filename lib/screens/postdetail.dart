@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/post.dart';
-import 'package:zefyr/zefyr.dart';
 import 'package:hello_world/screens/posteditpage.dart';
 import 'package:hello_world/screens/postcommentpage.dart';
-import 'package:hello_world/components/postdetail.dart';
+import 'package:hello_world/screens/viewcommentpage.dart';
 import 'package:hello_world/components/popmenuitem.dart';
 import 'dart:convert';
 
@@ -22,37 +21,39 @@ class PostDetail extends StatefulWidget {
 }
 
 class _PostDetail extends State<PostDetail> {
-  ZefyrController _controller;
-  FocusNode _focusNode;
-  NotusDocument _document;
+
+  TextEditingController _controller = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    // Create an empty document or load existing if you have one.
-    // Here we create an empty document:
-    _document = new NotusDocument();
-    _controller = new ZefyrController(_document);
-    _focusNode = new FocusNode();
+    _controller = new TextEditingController(text: 'Initial value\ndasdasd');
   }
 
+  // Control menu action
   void _menu_action(PopMenuItem item) {
     switch(item.text) {
       case 'Add Comment':
         Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (ctx) => new PostCommentPage(widget.post)
-              )
-            );
+          new MaterialPageRoute(
+            builder: (ctx) => new PostCommentPage(widget.post)
+          )
+        );
         break;
       case 'Edit':
         Navigator.of(context).push(
-              new MaterialPageRoute(
-                builder: (ctx) => new PostEditPage(widget.post)
-              )
-            );
+          new MaterialPageRoute(
+            builder: (ctx) => new PostEditPage(widget.post)
+          )
+        );
         break;
-      case 'View Comment': 
+      case 'View Comments': 
+        Navigator.of(context).push(
+          new MaterialPageRoute(
+            builder: (ctx) => new CommentPage(widget.post)
+          )
+        );
+        break;
     }
   }
 
@@ -63,17 +64,6 @@ class _PostDetail extends State<PostDetail> {
       appBar: new AppBar(
         title: Row(children: <Widget>[
           new Text('Author: ${widget.post.user.username}'),
-          // new IconButton(
-          //   icon: Icon(Icons.touch_app),
-          //   onPressed: (){
-          //     var data = json.decode(json.encode(_controller.document.toJson()));
-          //     NotusDocument nd = new NotusDocument.fromJson(data);
-          //     print(nd.toString());
-          //     setState(() {
-          //       _controller = new ZefyrController(nd);           
-          //     });
-          //   },
-          // )
         ],),
         actions: <Widget>[
           new PopupMenuButton<PopMenuItem>(
@@ -91,14 +81,45 @@ class _PostDetail extends State<PostDetail> {
         ]
       ),
 
-      body: new Card(
-        child: ZefyrScaffold(
-          child: ZefyrEditor(
-            enabled: true,
-            controller: _controller,
-            focusNode: _focusNode,
-          ),
-        )
+      body: new ListView(
+        children: <Widget>[
+          new Card(
+            child: Column(
+              children: <Widget>[
+                new Container(
+                  height: 100,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                          padding: EdgeInsets.only(left: 8.0, top: 8.0),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                'https://raw.githubusercontent.com/flutter/website/master/src/_includes/code/layout/lakes/images/lake.jpg'),
+                          )),
+                      Container(
+                          padding: EdgeInsets.only(left: 16.0),
+                          child: Text(
+                            '${widget.post.user.username}',
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontFamily: 'RobotoMono',
+                                fontWeight: FontWeight.bold),
+                          ))
+                    ],
+                  )
+                ),
+                new TextField(controller: _controller, 
+                  decoration: new InputDecoration(hintText: 'Enter Comment',
+                    contentPadding: const EdgeInsets.all(8.0)
+                  ), 
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  enabled: false,
+                ),
+              ],
+            ),
+          )
+        ]
       )
     );
   }

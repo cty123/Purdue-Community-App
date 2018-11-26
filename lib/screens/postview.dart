@@ -33,10 +33,11 @@ class _PostListPage extends State<PostListPage>{
   Future<Null> refreshList() async{
     await Future.delayed(Duration(seconds: 2));
     
-    setState(() {
-      _posts = new List();
-    });
-
+    if (this.mounted){
+      setState(() {
+        _posts = new List();
+      });
+    }
     return null;
   }
 
@@ -52,11 +53,11 @@ class _PostListPage extends State<PostListPage>{
       appBar: new AppBar(
         title: new Text('Post'),
         actions: <Widget>[
-            // action button
-            IconButton(
-              icon: Icon(Icons.control_point),
-              onPressed: _addPost,
-            ),
+          // action button
+          IconButton(
+            icon: Icon(Icons.control_point),
+            onPressed: _addPost,
+          ),
         ]
       ),
       body: Center(
