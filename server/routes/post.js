@@ -4,16 +4,22 @@ const Post = require('../models/post');
 const Comment = require('../models/comment');
 
 router.get('/', async (req, res, next) => {
-  let posts = await Post.find().sort('date').limit(2);
+  // Get page from the request query
+  let page = req.query.page;
+
+  // Fetch posts at that page
+  let posts = await Post.paginate({}, {page: page, limit: 2, sort: {date: -1}})
+
+  // Return posts
   res.status(201).json({
     status: 'Success',
-    posts: posts
+    posts: posts.docs,
+    page: postsz.page
   });
 });
 
 router.post('/', function (req, res, next) {
-  let title = req.body.title;
-  let content = req.body.content;
+  const {title, content} = req.body;
   let user = req.user;
 
   if (!title) {
