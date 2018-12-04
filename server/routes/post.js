@@ -45,7 +45,7 @@ router.post('/', function (req, res, next) {
 });
 
 router.get('/comment', async (req, res, next) => {
-  let post_id = req.query.post_id;
+  var {post_id, page} = req.query;
 
   let p = await Post.findById(post_id);
 
@@ -57,18 +57,17 @@ router.get('/comment', async (req, res, next) => {
 		return;
   }
 
-  let comments = await Comment.find({post: post_id}).sort('date').limit(3)
+  let result = await Comment.paginate({post: post_id}, {page: page, limit: 2, sort: {date: -1}})
 
   res.status(201).json({
     status: 'Success',
-    comments: comments
+    comments: result.docs,
+    page: result.page? result.page:1
   });
-  
 });
 
 router.post('/comment', async (req, res, next) => {
-  let post_id = req.body.post_id;
-	let content = req.body.content;
+  const {post_id, content} = req.body;
 	let user = req.user;
 	
 	if (!content) {
