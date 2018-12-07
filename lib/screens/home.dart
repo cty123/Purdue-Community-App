@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_world/screens/homepage.dart';
 import 'package:hello_world/screens/postview.dart';
 import 'package:hello_world/screens/settingpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -16,8 +17,19 @@ class _Home extends State<Home> {
   final _widgetOptions = [
     new HomePage(),
     new PostListPage(),
-    new SettingPage()
+    new SettingPage(),
   ];
+
+  @override
+	void initState() {
+		super.initState();
+		_fetchSessionAndNavigate();
+	}
+
+  _fetchSessionAndNavigate() async {
+    // Check local preference for user
+
+  }
 
   @override
   Widget build(BuildContext context) {

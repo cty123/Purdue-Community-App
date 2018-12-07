@@ -23,8 +23,7 @@ dependencies:
   # Load more option for Listview
   loadmore: ^1.0.1
 
-  # For editing and displaying richtext
-  zefyr: ^0.3.0
+  shared_preferences: ^0.4.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
