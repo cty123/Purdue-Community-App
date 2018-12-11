@@ -13,8 +13,10 @@ passport.use(new LocalStrategy({
         //this one is typically a DB call. Assume that the returned user object is pre-formatted and ready for storing in JWT
         return User.findOne({'username': username})
            .then(user => {
-               if (!user.comparePassword(password, user.password)) {
-                   return cb(null, false, {message: 'Incorrect email or password.'});
+               if (!user){
+                   return cb('Username or password error', false, null);
+               } else if (!user.comparePassword(password, user.password)) {
+                   return cb('Incorrect email or password.', false, null);
                };
                return cb(null, user, {message: 'Logged In Successfully'});
           })
@@ -25,8 +27,7 @@ passport.use(new LocalStrategy({
 passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
         secretOrKey   : 'your_jwt_secret'
-    },
-    function (jwtPayload, cb) {
+    }, function (jwtPayload, cb) {
 
         return User.findById(jwtPayload)
             .then(user => {

@@ -40,12 +40,31 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  _onSubmit() {
-    Navigator.of(context).pushReplacementNamed('Home');
-  }
-
-  _processLogin() {
-    
+  _onSubmit() async {
+    final response = await AuthUtils.login(username, password);
+    if (response['status'] == "Success") {
+      AuthUtils.insertDetails(_sharedPreferences, response);
+      Navigator.of(context).pushReplacementNamed('Home');
+    } else {
+      print(response);
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: new Text("Failed"),
+              content: new Text(response['message']),
+              actions: <Widget>[
+                // usually buttons at the bottom of the dialog
+                new FlatButton(
+                  child: new Text("Close"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   _toSignUp() {
