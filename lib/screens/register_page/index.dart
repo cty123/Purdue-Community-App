@@ -8,22 +8,37 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
+  // Declare text input controller
+  TextEditingController _user, _pass, _passConfirm, _email;
+
+  // Initialize local storage
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  // Declare local preference setting
   SharedPreferences _sharedPreferences;
 
-  TextEditingController _user, _pass, _passConfirm, _email;
+  // Bind strings to test inpute controller
   String get username => _user.text;
   String get email => _email.text;
   String get password => _pass.text;
   String get passwordConfirm => _passConfirm.text;
 
   _processSignUp() async {
+    // Wait for login API to respond
     final response = await AuthUtils.register(username, password, email);
+
+    // Check request status
     if (response['status'] == "Success") {
-      AuthUtils.insertDetails(_sharedPreferences, response);
+      // Wait for localstorage to store user data
+      await AuthUtils.insertDetails(_sharedPreferences, response);
+
+      // Redirect user to "Home" Page
       Navigator.of(context).pushReplacementNamed('Home');
     } else {
+      // Print out response data
       print(response);
+
+      // Display error dialog
       showDialog(
           context: context,
           builder: (BuildContext context) {

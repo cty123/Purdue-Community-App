@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/screens/home.dart';
-import 'package:hello_world/screens/login.dart';
+import 'package:hello_world/screens/login_page/index.dart';
 import 'package:hello_world/screens/register_page/index.dart';
 
 void main() => runApp(MyApp());

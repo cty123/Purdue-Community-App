@@ -14,10 +14,18 @@ class AuthUtils {
   }
 
   static insertDetails(SharedPreferences prefs, var response) {
+    // Get user object
     var user = response['user'];
+    // Set auth token
     prefs.setString(authTokenKey, user['token']);
+    // Set user_id
     prefs.setString(userIdKey, user['_id']);
+    // Set username
     prefs.setString(nameKey, user['username']);
+  }
+
+  static logoff(SharedPreferences prefs) {
+    prefs.clear();
   }
 
   static register(String username, String password, String email) async {
@@ -34,7 +42,6 @@ class AuthUtils {
     var url = "http://66.253.159.146:3000/users/login";
     try {
       http.Response res = await http.post(url, body: {"username": username, "password": password});
-      print(res.body);
       return json.decode(res.body);
     }catch (e) {
       print(e);

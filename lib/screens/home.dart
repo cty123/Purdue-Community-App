@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/screens/homepage.dart';
 import 'package:hello_world/screens/postview.dart';
-import 'package:hello_world/screens/settingpage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hello_world/screens/setting_page/index.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
