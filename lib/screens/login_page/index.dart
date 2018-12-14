@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hello_world/utils/auth_utils.dart';
+import 'package:hello_world/components/dialog.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -76,19 +77,7 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            return AlertDialog(
-              title: new Text("Failed"),
-              content: new Text(response['message']),
-              actions: <Widget>[
-                // usually buttons at the bottom of the dialog
-                new FlatButton(
-                  child: new Text("Close"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
+            return new ErrorDialog("Failed", response['message']);
           });
     }
   }
