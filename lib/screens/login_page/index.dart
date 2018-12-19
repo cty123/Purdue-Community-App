@@ -40,12 +40,8 @@ class _LoginPageState extends State<LoginPage> {
     // Initialize shared preference
     _sharedPreferences = await _prefs;
 
-    // Fetch authToken
-    String authToken = AuthUtils.getToken(_sharedPreferences);
-
-    /*
-    * Perhaps use the authToken to synchronize with the server
-    */
+    // Restore login status from local storage and Fetch authToken
+    String authToken = AuthUtils.restoreLoginStatus(_sharedPreferences);
 
     //Check status with authToken
     if (authToken != null) {

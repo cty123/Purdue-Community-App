@@ -9,9 +9,8 @@ class AuthUtils {
   static final String userIdKey = 'user_id';
   static final String nameKey = 'name';
 
-  static String getToken(SharedPreferences prefs) {
-    return prefs.getString(authTokenKey);
-  }
+  // Stores the authentication token
+  static String authToken;
 
   static insertDetails(SharedPreferences prefs, var response) {
     // Get user object
@@ -47,4 +46,17 @@ class AuthUtils {
       print(e);
     }
   } 
+
+  /*
+  * Restore the login status from local storage
+  */
+  static restoreLoginStatus(SharedPreferences prefs) {
+    authToken = prefs.getString(authTokenKey);
+
+    /*
+    * TODO: Verify the token with server and pull the latest user info and store it in user object
+    */
+
+    return authToken;
+  }
 }

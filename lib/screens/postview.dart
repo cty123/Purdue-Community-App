@@ -4,6 +4,7 @@ import 'package:hello_world/models/post.dart';
 import 'package:hello_world/models/user.dart';
 import 'package:hello_world/models/comment.dart';
 import 'package:loadmore/loadmore.dart';
+import 'package:hello_world/utils/post_utils.dart';
 
 class PostListPage extends StatefulWidget {
   PostListPage({Key key}) : super(key: key);
@@ -17,7 +18,7 @@ class _PostListPage extends State<PostListPage>{
 
   // Add post to the post list
   void _addPost() {
-    User u1 = new User('u1', 'email1', 'token1');
+    User u1 = new User('u1', 'email1');
 
     Comment c1 = new Comment(u1, 'Comments');
 
@@ -30,14 +31,24 @@ class _PostListPage extends State<PostListPage>{
     }
   }
 
-  Future<Null> refreshList() async{
-    await Future.delayed(Duration(seconds: 2));
-    
-    if (this.mounted){
-      setState(() {
-        _posts = new List();
-      });
-    }
+  Future<Null> _refreshList() async{
+    try {
+      List<Post> _newPosts = await PostUtils.pullPosts();
+
+      print(_newPosts);
+
+      if (this.mounted){
+        setState(() {
+          _newPosts.addAll(_posts);
+          _posts = _newPosts;
+        });
+      }
+
+    }catch(e) {
+      // Show error messagebox
+      print(e);
+    } 
+
     return null;
   }
 
@@ -62,7 +73,7 @@ class _PostListPage extends State<PostListPage>{
       ),
       body: Center(
         child: RefreshIndicator(
-          onRefresh: refreshList,
+          onRefresh: _refreshList,
           child: LoadMore(
             onLoadMore: _loadMore,
             whenEmptyLoad: false,

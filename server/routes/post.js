@@ -8,13 +8,13 @@ router.get('/', async (req, res, next) => {
   let page = req.query.page;
 
   // Fetch posts at that page
-  let posts = await Post.paginate({}, {page: page, limit: 2, sort: {date: -1}})
+  let posts = await Post.paginate({}, {populate: 'user', page: page, limit: 2, sort: {date: -1}})
 
   // Return posts
   res.status(201).json({
     status: 'Success',
     posts: posts.docs,
-    page: postsz.page
+    page: posts.page
   });
 });
 

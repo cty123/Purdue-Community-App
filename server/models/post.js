@@ -12,8 +12,9 @@ let postSchema = new mongoose.Schema({
         require: true,
     },
     user: {
-        type: String,
-        require: true,
+        type: Schema.Types.ObjectId, 
+            ref: 'User',
+            require: true,
     },
     comments:[
         {

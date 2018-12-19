@@ -20,7 +20,7 @@ class _CommentPage extends State<CommentPage> {
   void initState() {
     super.initState();
 
-    User u = new User('username', 'email', 'token');
+    User u = new User('username', 'email');
 
     Comment c = new Comment(u, 'content');
 
