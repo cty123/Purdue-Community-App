@@ -54,8 +54,8 @@ class _PostListPage extends State<PostListPage>{
 
   Future<bool> _loadMore() async {
     await Future.delayed(Duration(seconds: 2));
-    _addPost();
-    return true;
+    // _addPost();
+    return false;
   }
 
   @override
