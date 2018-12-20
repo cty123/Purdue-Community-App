@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/components/postItem.dart';
+import 'package:hello_world/screens/post_page/components/postItem.dart';
 import 'package:hello_world/models/post.dart';
 import 'package:hello_world/models/user.dart';
 import 'package:hello_world/models/comment.dart';
@@ -21,6 +21,7 @@ class _PostListPage extends State<PostListPage>{
   void initState() {
     super.initState();
 
+    // Initialize the isFinished flag
     isFinished = false;
   }
 
@@ -30,7 +31,7 @@ class _PostListPage extends State<PostListPage>{
 
     Comment c1 = new Comment(u1, 'Comments');
 
-    Post p = new Post('title', 'content', 'avatar_url', ['url1'], u1, [c1]);
+    Post p = new Post('title', 'content', 'avatar_url', ['url1'], u1, [c1], "temp");
 
     if (this.mounted){
       setState(() {
@@ -49,7 +50,8 @@ class _PostListPage extends State<PostListPage>{
 
       if (this.mounted){
         setState(() {
-          _posts = _newPosts;
+          _posts = new List();
+          _posts.addAll(_newPosts.reversed);
         });
       }
 
@@ -76,7 +78,7 @@ class _PostListPage extends State<PostListPage>{
       // Setstate
       if (this.mounted){
         setState(() {
-          _posts.addAll(_newPosts);
+          _posts.addAll(_newPosts.reversed);
         });
       }
     }catch(e) {

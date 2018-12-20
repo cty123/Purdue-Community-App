@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/post.dart';
-import 'package:hello_world/screens/postdetail.dart';
+import 'package:hello_world/screens/post_detail_page/index.dart';
 
 class PostItem extends StatelessWidget {
   final Post post;
@@ -54,9 +54,20 @@ class PostItem extends StatelessWidget {
                       '${post.title}',
                       maxLines: 5,
                       style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 18.0,
                           fontFamily: 'RobotoMono',
                           fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+                    child: Text(
+                      '${post.content}',
+                      maxLines: 5,
+                      style: TextStyle(
+                          fontSize: 16.0,
+                          fontFamily: 'RobotoMono',
+                      ),
                     ),
                   ),
                   Container(
@@ -64,7 +75,7 @@ class PostItem extends StatelessWidget {
                       child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            "Nov.21 2018",
+                            '${post.postDate}',
                             style: TextStyle(
                                 fontSize: 12.0, fontStyle: FontStyle.italic),
                           ))),
