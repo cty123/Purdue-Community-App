@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/screens/homepage.dart';
-import 'package:hello_world/screens/post_page/postview.dart';
+import 'package:hello_world/screens/post_page/index.dart';
 import 'package:hello_world/screens/setting_page/index.dart';
 
 class Home extends StatefulWidget {

@@ -51,7 +51,7 @@ class PostItem extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
                     child: Text(
-                      '${post.content}',
+                      '${post.title}',
                       maxLines: 5,
                       style: TextStyle(
                           fontSize: 16.0,

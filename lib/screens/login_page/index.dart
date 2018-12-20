@@ -40,12 +40,12 @@ class _LoginPageState extends State<LoginPage> {
     // Initialize shared preference
     _sharedPreferences = await _prefs;
 
-    // Restore login status from local storage and Fetch authToken
-    String authToken = AuthUtils.restoreLoginStatus(_sharedPreferences);
+    // Restore login status from local storage and verify login status
+    bool isLoggedIn = await AuthUtils.restoreLoginStatus(_sharedPreferences);
 
     //Check status with authToken
-    if (authToken != null) {
-      print("Loging Page: AuthToken: Read: ${authToken}");
+    if (isLoggedIn) {
+      print("Loging Page: AuthToken: Read: ${AuthUtils.authToken}");
 
       // Redirect the user to "Home" page
       Navigator.of(context).pushReplacementNamed('Home');
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       print("Logging Successful: Response: ${response}");
 
       // Wait for localstorage to store user data
-      await AuthUtils.insertDetails(_sharedPreferences, response);
+      await AuthUtils.insertDetails(_sharedPreferences, response, username, password);
 
       // Redirect user to home page
       Navigator.of(context).pushReplacementNamed('Home');

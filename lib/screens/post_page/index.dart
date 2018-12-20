@@ -15,6 +15,14 @@ class PostListPage extends StatefulWidget {
 
 class _PostListPage extends State<PostListPage>{
   static List<Post> _posts = new List();
+  static bool isFinished;
+
+  @override
+  void initState() {
+    super.initState();
+
+    isFinished = false;
+  }
 
   // Add post to the post list
   void _addPost() {
@@ -35,11 +43,12 @@ class _PostListPage extends State<PostListPage>{
     try {
       List<Post> _newPosts = await PostUtils.pullPosts();
 
-      print(_newPosts);
+      print("Refreshing Fetching post: ${_newPosts}");
+
+      isFinished = false;
 
       if (this.mounted){
         setState(() {
-          _newPosts.addAll(_posts);
           _posts = _newPosts;
         });
       }
@@ -53,9 +62,30 @@ class _PostListPage extends State<PostListPage>{
   }
 
   Future<bool> _loadMore() async {
-    await Future.delayed(Duration(seconds: 2));
-    // _addPost();
-    return false;
+    try {
+      // Get more posts
+      List<Post> _newPosts = await PostUtils.pullMore();
+
+      // Print out new messages read
+      print(_newPosts);
+      
+      if (_newPosts.length == 0) {
+        isFinished = true;
+      }
+
+      // Setstate
+      if (this.mounted){
+        setState(() {
+          _posts.addAll(_newPosts);
+        });
+      }
+    }catch(e) {
+      // Show error messagebox
+      print(e);
+      return false;
+    } 
+
+    return true;
   }
 
   @override
@@ -75,6 +105,7 @@ class _PostListPage extends State<PostListPage>{
         child: RefreshIndicator(
           onRefresh: _refreshList,
           child: LoadMore(
+            isFinish: isFinished,
             onLoadMore: _loadMore,
             whenEmptyLoad: false,
             textBuilder: DefaultLoadMoreTextBuilder.english,

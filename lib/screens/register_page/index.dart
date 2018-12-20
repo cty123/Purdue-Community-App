@@ -31,7 +31,7 @@ class _RegisterPage extends State<RegisterPage> {
     // Check request status
     if (response['status'] == "Success") {
       // Wait for localstorage to store user data
-      await AuthUtils.insertDetails(_sharedPreferences, response);
+      await AuthUtils.insertDetails(_sharedPreferences, response, username, password);
 
       // Redirect user to "Home" Page
       Navigator.of(context).pushReplacementNamed('Home');
