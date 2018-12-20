@@ -7,15 +7,40 @@ router.get('/', async (req, res, next) => {
   // Get page from the request query
   let page = req.query.page;
 
-  // Fetch posts at that page
-  let posts = await Post.paginate({}, {populate: 'user', page: page, limit: 2, sort: {date: -1}})
+  // Check if the user has specified a page
+  if (!page) {
+    // Perform first query to get the totalPages
+    page = 1;
+    
+    // Perform the first query to get the total number of pages
+    let response = await Post.paginate({}, {populate: 'user', page: page, limit: 2, sort: {date: 1}});
 
-  // Return posts
-  res.status(201).json({
-    status: 'Success',
-    posts: posts.docs,
-    page: posts.page
-  });
+    // Assign the maxpage to the user
+    page = response.totalPages;
+
+    // Perform the second query to actually fetch the data
+    let posts = await Post.paginate({}, {populate: 'user', page: page, limit: 2, sort: {date: 1}});
+
+    // Return JSON
+    res.status(201).json({
+      status: 'Success',
+      posts: posts.docs,
+      page: posts.page,
+      totalPages: posts.totalPages
+    });
+
+  } else {
+    // If the user specifies a page, we simply return that page
+    let posts = await Post.paginate({}, {populate: 'user', page: page, limit: 2, sort: {date: 1}});
+
+    // Return JSON
+    res.status(201).json({
+      status: 'Success',
+      posts: posts.docs,
+      page: posts.page,
+      totalPages: posts.totalPages
+    });
+  }
 });
 
 router.post('/', function (req, res, next) {
