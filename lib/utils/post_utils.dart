@@ -41,7 +41,7 @@ class PostUtils {
       var strdate = new DateFormat.yMMMMd("en_US").format(date);
 
       // Parse post object
-      Post new_post = Post(p['title'], p['content'], 'avatar', ['url1'], u, null, strdate);
+      Post new_post = Post(p['title'], p['content'], 'avatar', ['url1'], u, p['comments'].length, strdate);
 
       // Add the post in the post array
       _newPosts.add(new_post);
@@ -71,7 +71,6 @@ class PostUtils {
     // Parse message body
     var res_obj = json.decode(res.body);
 
-
     // Get posts data
     var posts = res_obj['posts'];
 
@@ -85,12 +84,30 @@ class PostUtils {
       var strdate = new DateFormat.yMMMMd("en_US").format(date);
 
       // Parse post object
-      Post new_post = Post(p['title'], p['content'], 'avatar', ['url1'], u, null, strdate);
+      Post new_post = Post(p['title'], p['content'], 'avatar', ['url1'], u, p['comments'].length, strdate);
 
       // Add the post in the post array
       _newPosts.add(new_post);
     }
 
     return _newPosts;
+  }
+
+  static Future<bool> createNewPost(String title, String content) async {
+    var url = "http://66.253.159.146:3000/post";
+    
+    // Http request
+    http.Response res = await http.post(url, body: {"title": title, "content": content}, 
+      headers: {"Authorization": 'Bearer ${AuthUtils.authToken}'});
+
+    // Parse return JSON
+    var res_obj = json.decode(res.body);
+    
+    // Error handling
+    if (res_obj['status'] == 'Success') {
+      return true;
+    }
+
+    return false;
   }
 }

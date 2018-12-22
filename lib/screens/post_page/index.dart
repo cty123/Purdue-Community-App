@@ -5,15 +5,21 @@ import 'package:hello_world/models/user.dart';
 import 'package:hello_world/models/comment.dart';
 import 'package:loadmore/loadmore.dart';
 import 'package:hello_world/utils/post_utils.dart';
+import 'package:hello_world/components/popmenuitem.dart';
+import 'package:hello_world/screens/new_post_page/index.dart';
 
 class PostListPage extends StatefulWidget {
   PostListPage({Key key}) : super(key: key);
+
+  final List<PopMenuItem> _popOptions = [
+    new PopMenuItem(Icon(Icons.add), 'New Post'),
+  ];
 
   @override
   _PostListPage createState() => new _PostListPage();
 }
 
-class _PostListPage extends State<PostListPage>{
+class _PostListPage extends State<PostListPage> {
   static List<Post> _posts = new List();
   static bool isFinished;
 
@@ -25,22 +31,32 @@ class _PostListPage extends State<PostListPage>{
     isFinished = false;
   }
 
-  // Add post to the post list
-  void _addPost() {
-    User u1 = new User('u1', 'email1');
+  // // Add post to the post list
+  // void _addPost() {
+  //   User u1 = new User('u1', 'email1');
 
-    Comment c1 = new Comment(u1, 'Comments');
+  //   Comment c1 = new Comment(u1, 'Comments');
 
-    Post p = new Post('title', 'content', 'avatar_url', ['url1'], u1, [c1], "temp");
+  //   Post p =
+  //       new Post('title', 'content', 'avatar_url', ['url1'], u1, [c1], "temp");
 
-    if (this.mounted){
-      setState(() {
-        _posts.add(p);
-      });
+  //   if (this.mounted) {
+  //     setState(() {
+  //       _posts.add(p);
+  //     });
+  //   }
+  // }
+
+  void _menuAction(PopMenuItem item) {
+    switch (item.text) {
+      case 'New Post':
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (ctx) => new NewPost()));
+        break;
     }
   }
 
-  Future<Null> _refreshList() async{
+  Future<Null> _refreshList() async {
     try {
       List<Post> _newPosts = await PostUtils.pullPosts();
 
@@ -48,17 +64,16 @@ class _PostListPage extends State<PostListPage>{
 
       isFinished = false;
 
-      if (this.mounted){
+      if (this.mounted) {
         setState(() {
           _posts = new List();
           _posts.addAll(_newPosts.reversed);
         });
       }
-
-    }catch(e) {
+    } catch (e) {
       // Show error messagebox
       print(e);
-    } 
+    }
 
     return null;
   }
@@ -70,22 +85,22 @@ class _PostListPage extends State<PostListPage>{
 
       // Print out new messages read
       print(_newPosts);
-      
+
       if (_newPosts.length == 0) {
         isFinished = true;
       }
 
       // Setstate
-      if (this.mounted){
+      if (this.mounted) {
         setState(() {
           _posts.addAll(_newPosts.reversed);
         });
       }
-    }catch(e) {
+    } catch (e) {
       // Show error messagebox
       print(e);
       return false;
-    } 
+    }
 
     return true;
   }
@@ -93,18 +108,21 @@ class _PostListPage extends State<PostListPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text('Post'),
-        actions: <Widget>[
-          // action button
-          IconButton(
-            icon: Icon(Icons.control_point),
-            onPressed: _addPost,
-          ),
-        ]
-      ),
-      body: Center(
-        child: RefreshIndicator(
+        appBar: new AppBar(title: new Text('Post'), actions: <Widget>[
+          new PopupMenuButton<PopMenuItem>(
+              icon: Icon(Icons.add), // overflow menu
+              onSelected: _menuAction,
+              itemBuilder: (BuildContext context) {
+                return widget._popOptions.map((PopMenuItem item) {
+                  return PopupMenuItem<PopMenuItem>(
+                    child: item,
+                    value: item,
+                  );
+                }).toList();
+              }),
+        ]),
+        body: Center(
+            child: RefreshIndicator(
           onRefresh: _refreshList,
           child: LoadMore(
             isFinish: isFinished,
@@ -118,8 +136,6 @@ class _PostListPage extends State<PostListPage>{
               },
             ),
           ),
-        )
-      )
-    );
+        )));
   }
 }

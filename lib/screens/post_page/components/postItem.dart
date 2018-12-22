@@ -115,7 +115,7 @@ class PostItem extends StatelessWidget {
                           top: 8.0, left: 16.0, bottom: 8.0, right: 8.0),
                       child: Icon(Icons.comment),
                     ),
-                    Text('100'),
+                    Text('${post.num_comments}'),
                     Text(' Comments'),
                   ]))
                 ],
