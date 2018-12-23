@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/screens/post_page/components/postItem.dart';
 import 'package:hello_world/models/post.dart';
-import 'package:hello_world/models/user.dart';
-import 'package:hello_world/models/comment.dart';
 import 'package:loadmore/loadmore.dart';
 import 'package:hello_world/utils/post_utils.dart';
 import 'package:hello_world/components/popmenuitem.dart';
@@ -30,22 +28,6 @@ class _PostListPage extends State<PostListPage> {
     // Initialize the isFinished flag
     isFinished = false;
   }
-
-  // // Add post to the post list
-  // void _addPost() {
-  //   User u1 = new User('u1', 'email1');
-
-  //   Comment c1 = new Comment(u1, 'Comments');
-
-  //   Post p =
-  //       new Post('title', 'content', 'avatar_url', ['url1'], u1, [c1], "temp");
-
-  //   if (this.mounted) {
-  //     setState(() {
-  //       _posts.add(p);
-  //     });
-  //   }
-  // }
 
   void _menuAction(PopMenuItem item) {
     switch (item.text) {

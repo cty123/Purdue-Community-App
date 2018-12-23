@@ -134,4 +134,38 @@ router.post('/comment', async (req, res, next) => {
 	});
 });
 
+router.post('/edit', async (req, res, next) => {
+  const {post_id, title, content} = req.body;
+
+  // Get post by the provided id
+  try {
+    let post = await Post.findById(post_id).populate('user');
+
+    // Check if the post owner is the requester
+    if (!post.user._id.equals(req.user._id)) {
+      res.status(200).json({
+        status: 'Failed',
+        message: 'Not authorized to edit this post'
+      });
+      return;
+    }
+
+    // Change and save the title and content
+    post.title = title;
+    post.content = content;
+    await post.save();
+    
+    // Return success message
+    res.status(200).json({
+      status: 'Success',
+      message: 'Success'
+    });
+  }catch(e) {
+    print(e);
+    res.status(200).json({
+      status: 'Failed',
+      message: 'Database Error'
+    });
+  }
+});
 module.exports = router;

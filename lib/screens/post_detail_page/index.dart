@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/post.dart';
-import 'package:hello_world/screens/posteditpage.dart';
+import 'package:hello_world/screens/post_edit_page/index.dart';
 import 'package:hello_world/screens/postcommentpage.dart';
 import 'package:hello_world/screens/viewcommentpage.dart';
 import 'package:hello_world/components/popmenuitem.dart';
-import 'dart:convert';
 
 class PostDetail extends StatefulWidget {
   final Post post;
@@ -38,7 +37,7 @@ class _PostDetail extends State<PostDetail> {
         break;
       case 'Edit':
         Navigator.of(context).push(new MaterialPageRoute(
-            builder: (ctx) => new PostEditPage(widget.post)));
+            builder: (ctx) => new EditPost(widget.post)));
         break;
       case 'View Comments':
         Navigator.of(context).push(new MaterialPageRoute(
@@ -53,7 +52,7 @@ class _PostDetail extends State<PostDetail> {
         appBar: new AppBar(
             title: Row(
               children: <Widget>[
-                new Text('Title: ${widget.post.title}'),
+                new Text('${widget.post.title}'),
               ],
             ),
             actions: <Widget>[
