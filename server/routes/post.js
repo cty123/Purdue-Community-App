@@ -76,62 +76,111 @@ router.post('/', function (req, res, next) {
 });
 
 router.get('/comment', async (req, res, next) => {
+  // Obtain the post_id and page from the http query
   var {post_id, page} = req.query;
 
-  let p = await Post.findById(post_id);
-
-  if (!p) {
-    res.json({
-			status: 'Failed',
-			message: 'No post found'
-		});
-		return;
+  // Check if the user has specified a page
+  if (!page) {
+    // Get the first page by default
+    page = 1;
   }
 
-  let result = await Comment.paginate({post: post_id}, {page: page, limit: 2, sort: {date: -1}})
+  try {
+    // Grab the post by the provided post id
+    let post = await Post.findById(post_id);
 
-  res.status(201).json({
-    status: 'Success',
-    comments: result.docs,
-    page: result.page? result.page:1
-  });
+    // Check if the post exists
+    if (!post) {
+      // Return failed error
+      res.status(200).json({
+        status: 'Failed',
+        message: 'No post found'
+      });
+      return;
+    }
+
+    // Get response from mongoose query
+    let response = await Comment.paginate({post: post}, {populate: 'user', page: page, limit: 2, sort: {date: -1}});
+
+    // Return result
+    res.status(200).json({
+      status: 'Success',
+      comments: response.docs,
+      page: response.page,
+      totalPages: response.totalPages
+		});
+  } catch(e){
+    // Return failed message
+    res.status(200).json({
+			status: 'Failed',
+			message: 'Database Error'
+		});
+  }
 });
 
 router.post('/comment', async (req, res, next) => {
+  // Get query from http request body
   const {post_id, content} = req.body;
+
+  // Obtain the operation user
 	let user = req.user;
-	
+  
+  // Check if the content is null
 	if (!content) {
-		res.json({
+    // Return failure message
+		res.status(200).json({
 			status: 'Failed',
-			message: 'No content'
+			message: 'Empty content is not allowed'
 		});
 		return;
 	}
 
-	p = await Post.findById(post_id);
+  try {
+    // Get post object
+    p = await Post.findById(post_id);
 
-	if (!p) {
-		res.json({
-			status: 'Failed',
-			message: 'No post found'
-		});
-		return;
-	}
+    // Check if the post exists
+    if (!p) {
+      // Return failure message
+      res.status(200).json({
+        status: 'Failed',
+        message: 'No post found'
+      });
+      return;
+    }
+    
+    // Construct a new comment object
+    let c = new Comment();
+    
+    // Set the content of the comment object
+    c.content = content;
+    
+    // Assign user to the object
+    c.user = user;
+    
+    // Link post id
+    c.post = p;
 
-	let c = new Comment();
-	c.content = content;
-  c.user = user;
-  c.post = p;
-	c.save();
+    // Wait for saving
+    await c.save();
 
-	p.comments.push(c);
-	p.save();
+    // Add the comment to the post
+    p.comments.push(c);
+    
+    // Save the post
+    await p.save();
 
-	res.status(201).json({
-		status: 'Success',
-		post: c
-	});
+    // Return success message
+    res.status(200).json({
+      status: 'Success',
+      post: c
+    });
+  } catch(e) {
+    res.status(200).json({
+      status: 'Failed',
+      message: 'Database Error'
+    });
+  }
 });
 
 router.post('/edit', async (req, res, next) => {

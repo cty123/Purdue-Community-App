@@ -3,6 +3,7 @@ import 'package:hello_world/models/post.dart';
 import 'package:hello_world/models/user.dart';
 import 'package:hello_world/models/comment.dart';
 import 'package:hello_world/components/commentitem.dart';
+import 'package:hello_world/utils/comment_util.dart';
 
 class CommentPage extends StatefulWidget {
   final Post post;
@@ -13,26 +14,28 @@ class CommentPage extends StatefulWidget {
 }
 
 class _CommentPage extends State<CommentPage> {
+  // Define displaying comment list
+  List<Comment> _commentList = new List();
 
-  List<Comment> _comment_list;
+  // Set page to default 1
+  int page = 1;
 
   @override
   void initState() {
     super.initState();
 
-    User u = new User('username', 'email');
-
-    //Comment c = new Comment(u, 'content');
-
-    //_comment_list = [c, c];
+    // Call _refreshList 
+    _refreshList();
   }
 
-  Future<Null> refreshList() async{
-    await Future.delayed(Duration(seconds: 2));
+  Future<Null> _refreshList() async{
+    List<Comment> result = await CommentUtils.fetchComments(widget.post.id, page);
     
     if (this.mounted){
       setState(() {
-        _comment_list = new List();
+        _commentList = new List();
+        _commentList.addAll(result);
+        page = 1;
       });
     }
     return null;
@@ -47,11 +50,11 @@ class _CommentPage extends State<CommentPage> {
           ),
         ),
         body: RefreshIndicator(
-          onRefresh: refreshList,
+          onRefresh: _refreshList,
           child: ListView.builder(
-            itemCount: _comment_list.length,
+            itemCount: _commentList.length,
             itemBuilder: (BuildContext ctxt, int index) {
-              return CommentItem(_comment_list[index]);
+              return CommentItem(_commentList[index]);
             },
           )
         ),
