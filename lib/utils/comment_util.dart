@@ -11,7 +11,7 @@ class CommentUtils {
   static fetchComments(String post_id, int page) async {
     var url = "http://66.253.159.146:3000/post/comment?post_id=${post_id}&page=${page}";
     
-     // Wait for HTTP response
+    // Wait for HTTP response
     http.Response res = await http.get(url,
         headers: {"Authorization": "Bearer " + AuthUtils.authToken});
 
@@ -45,5 +45,23 @@ class CommentUtils {
     }
 
     return _newComments;
+  }
+
+  static postComments(String post_id, String content) async {
+    const url = "http://66.253.159.146:3000/post/comment";
+    
+    // Http request
+    http.Response res = await http.post(url, body: {"post_id": post_id, "content": content}, 
+      headers: {"Authorization": 'Bearer ${AuthUtils.authToken}'});
+
+    // Parse return JSON
+    var res_obj = json.decode(res.body);
+    
+    // Error handling
+    if (res_obj['status'] == 'Success') {
+      return true;
+    }
+
+    return false;
   }
 }

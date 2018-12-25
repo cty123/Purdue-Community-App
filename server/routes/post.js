@@ -100,7 +100,7 @@ router.get('/comment', async (req, res, next) => {
     }
 
     // Get response from mongoose query
-    let response = await Comment.paginate({post: post}, {populate: 'user', page: page, limit: 2, sort: {date: -1}});
+    let response = await Comment.paginate({post: post}, {populate: 'user', page: page, limit: 2, sort: {date: 1}});
 
     // Return result
     res.status(200).json({

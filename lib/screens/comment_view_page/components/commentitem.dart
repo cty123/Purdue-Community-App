@@ -25,11 +25,15 @@ class CommentItem extends StatelessWidget {
           new TextField(
             controller: new TextEditingController(text: _comment.content),
             decoration: new InputDecoration(
-                hintText: 'Enter Comment',
                 contentPadding: const EdgeInsets.all(8.0)),
             keyboardType: TextInputType.multiline,
             maxLines: null,
             enabled: false,
+          ),
+          new Container(
+            alignment: Alignment.centerRight,
+            margin: EdgeInsets.only(right: 8.0),
+            child:new Text('${_comment.date}',)
           )
         ],
       ),

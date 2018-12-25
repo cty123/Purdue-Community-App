@@ -65,9 +65,6 @@ class _PostListPage extends State<PostListPage> {
       // Get more posts
       List<Post> _newPosts = await PostUtils.pullMore();
 
-      // Print out new messages read
-      print(_newPosts);
-
       if (_newPosts.length == 0) {
         isFinished = true;
       }
