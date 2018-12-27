@@ -24,6 +24,13 @@ let postSchema = new mongoose.Schema({
             default: []
         }
     ],
+    images: [
+        {
+            type: String,
+            require: false,
+            default: []
+        }
+    ],
     date: {
         type: Date,
         require: false,

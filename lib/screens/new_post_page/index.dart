@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/utils/post_utils.dart';
 import 'package:hello_world/components/dialog.dart';
+import 'dart:io';
 
 class NewPost extends StatefulWidget {
   // Create state object
@@ -8,6 +9,8 @@ class NewPost extends StatefulWidget {
 }
 
 class _NewPost extends State<NewPost> {
+  List<File> imageFiles;
+
   // Define text controllers
   TextEditingController _titleController;
   TextEditingController _contentController;
@@ -23,6 +26,22 @@ class _NewPost extends State<NewPost> {
     // Initialize text controller
     _titleController = new TextEditingController();
     _contentController = new TextEditingController();
+
+    imageFiles = new List();
+    imageFiles.add(new File(""));
+    imageFiles.add(new File(""));
+  }
+
+  List<Widget> _buildImageBar() {
+    List<Widget> imgBar = new List();
+
+    // Build widget
+    for (var f in imageFiles) {
+      Widget w = new Image.asset('assets/images/icons8-plus-50.png');
+      imgBar.add(w);
+    }
+
+    return imgBar;
   }
 
   void _onSubmit() async {
@@ -51,6 +70,13 @@ class _NewPost extends State<NewPost> {
             return new ErrorDialog("Failed", 'Error: $e');
           });
     }
+  }
+
+  void _addImage() {
+
+    setState(() {
+      imageFiles.add(new File(""));
+    });
   }
 
   @override
@@ -84,6 +110,15 @@ class _NewPost extends State<NewPost> {
                     contentPadding: const EdgeInsets.all(8.0)),
                 maxLines: 20,
               ),
+            ),
+            new Row(
+              children: _buildImageBar()
+            ),
+            new RaisedButton(
+              onPressed: () {
+                _addImage();
+              },
+              child: new Text('Add Images - (Up to 5)'),
             ),
             new RaisedButton(
               onPressed: () {
