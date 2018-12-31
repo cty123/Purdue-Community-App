@@ -4,12 +4,13 @@ import 'package:hello_world/models/comment.dart';
 import 'package:hello_world/models/user.dart';
 import 'package:hello_world/utils/auth_utils.dart';
 import 'package:intl/intl.dart';
+import 'package:hello_world/utils/configs.dart';
 
 class CommentUtils {
 
   // Fetch comments from the server
   static fetchComments(String post_id, int page) async {
-    var url = "http://66.253.159.146:3000/post/comment?post_id=${post_id}&page=${page}";
+    var url = "${Configs.baseUrl}/post/comment?post_id=${post_id}&page=${page}";
     
     // Wait for HTTP response
     http.Response res = await http.get(url,
@@ -48,7 +49,7 @@ class CommentUtils {
   }
 
   static postComments(String post_id, String content) async {
-    const url = "http://66.253.159.146:3000/post/comment";
+    var url = "${Configs.baseUrl}/post/comment";
     
     // Http request
     http.Response res = await http.post(url, body: {"post_id": post_id, "content": content}, 

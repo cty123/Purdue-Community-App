@@ -4,12 +4,13 @@ import 'package:hello_world/models/post.dart';
 import 'package:hello_world/models/user.dart';
 import 'package:hello_world/utils/auth_utils.dart';
 import 'package:intl/intl.dart';
+import 'package:hello_world/utils/configs.dart';
 
 class PostUtils {
   static int page = 0;
 
   static pullPosts() async {
-    var url = "http://66.253.159.146:3000/post";
+    var url = "${Configs.baseUrl}/post";
     
     // Wait for HTTP response
     http.Response res = await http.get(url,
@@ -62,8 +63,8 @@ class PostUtils {
     // Decrement by 1
     page -= 1;
 
-    var url = "http://66.253.159.146:3000/post?page=${page}";
-
+    var url = "${Configs.baseUrl}/post?page=${page}";
+    
     // Wait for HTTP response
     http.Response res = await http.get(url,
         headers: {"Authorization": "Bearer " + AuthUtils.authToken});
@@ -94,8 +95,8 @@ class PostUtils {
   }
 
   static Future<bool> createNewPost(String title, String content) async {
-    var url = "http://66.253.159.146:3000/post";
-    
+    var url = "${Configs.baseUrl}/post";
+    print(AuthUtils.authToken);
     // Http request
     http.Response res = await http.post(url, body: {"title": title, "content": content}, 
       headers: {"Authorization": 'Bearer ${AuthUtils.authToken}'});
@@ -112,7 +113,7 @@ class PostUtils {
   }
 
   static Future<bool> updatePost(String title, String content, String post_id) async {
-    var url = "http://66.253.159.146:3000/post/edit";
+    var url = "${Configs.baseUrl}/post/edit";
     
     // Http request
     http.Response res = await http.post(url, 
