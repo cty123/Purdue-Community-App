@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_world/utils/post_utils.dart';
 import 'package:hello_world/components/dialog.dart';
 import 'dart:io';
+import 'package:hello_world/screens/new_post_page/components/imagePicker.dart';
 
 class NewPost extends StatefulWidget {
   // Create state object
@@ -9,6 +10,7 @@ class NewPost extends StatefulWidget {
 }
 
 class _NewPost extends State<NewPost> {
+  // Declear file array corresponding to the upload files
   List<File> imageFiles;
 
   // Define text controllers
@@ -27,21 +29,29 @@ class _NewPost extends State<NewPost> {
     _titleController = new TextEditingController();
     _contentController = new TextEditingController();
 
+    // Initialize image file list
     imageFiles = new List();
-    imageFiles.add(new File(""));
-    imageFiles.add(new File(""));
+
+    // // For testing purposes
+    // imageFiles.add(new File('assets/images/icons8-plus-50.png'));
+    // imageFiles.add(new File('assets/images/icons8-plus-50.png'));
   }
 
   List<Widget> _buildImageBar() {
+    // Init imgBar list
     List<Widget> imgBar = new List();
 
     // Build widget
     for (var f in imageFiles) {
-      Widget w = new Image.asset('assets/images/icons8-plus-50.png');
+      Widget w = new Image.file(f);
       imgBar.add(w);
     }
+    
+    // Add the trailing add image icon
+    imgBar.add(new Image.asset('assets/images/icons8-plus-50.png'));
 
-    return imgBar;
+    // Return built image widgets
+    return imgBar;  
   }
 
   void _onSubmit() async {
@@ -63,20 +73,22 @@ class _NewPost extends State<NewPost> {
             });
       }
     } catch (e) {
-      print(e);
-      showDialog(
+        showDialog(
           context: context,
           builder: (BuildContext context) {
             return new ErrorDialog("Failed", 'Error: $e');
-          });
+          }
+        );
     }
   }
 
+  // Add image function
   void _addImage() {
-
-    setState(() {
-      imageFiles.add(new File(""));
-    });
+    Navigator.of(context).push(new MaterialPageRoute(
+            builder: (ctx) => new ImagePickerPage()));
+    // setState(() {
+    //   imageFiles.add(new File(""));
+    // });
   }
 
   @override
