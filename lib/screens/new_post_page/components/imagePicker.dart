@@ -10,7 +10,7 @@ class ImagePickerPage extends StatefulWidget {
 class _ImagePickerPage extends State<ImagePickerPage> {
   File _image;
 
-  Future takePhoto() async {
+  Future _takePhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
@@ -18,12 +18,16 @@ class _ImagePickerPage extends State<ImagePickerPage> {
     });
   }
 
-  Future selectPhoto() async {
+  Future _selectPhoto() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _image = image;
     });
+  }
+
+  void _imageConfirm() {
+    Navigator.pop(context, _image);
   }
 
   @override
@@ -45,15 +49,22 @@ class _ImagePickerPage extends State<ImagePickerPage> {
           new Container(
             padding: EdgeInsets.all(8.0),
             child: new RaisedButton(
-              onPressed: selectPhoto,
+              onPressed: _selectPhoto,
               child: new Text('Select a photo'),
             ),
           ),
           new Container(
             padding: EdgeInsets.all(8.0),
             child: new RaisedButton(
-              onPressed: takePhoto,
+              onPressed: _takePhoto,
               child: new Text('Take a photo'),
+            ),
+          ),
+          new Container(
+            padding: EdgeInsets.all(8.0),
+            child: new RaisedButton(
+              onPressed: _imageConfirm,
+              child: new Text('Confirm'),
             ),
           ),
         ],

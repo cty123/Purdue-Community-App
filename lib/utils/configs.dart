@@ -1,3 +1,3 @@
 class Configs {
-  static String baseUrl = "http://172.20.6.204:3000";
+  static String baseUrl = "http://10.71.0.156:3000";
 }

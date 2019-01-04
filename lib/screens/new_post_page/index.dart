@@ -41,9 +41,12 @@ class _NewPost extends State<NewPost> {
     // Init imgBar list
     List<Widget> imgBar = new List();
 
+    // Define size of each image 
+    double imgSize = (MediaQuery.of(context).size.width) / 5;
+
     // Build widget
     for (var f in imageFiles) {
-      Widget w = new Image.file(f);
+      Widget w = new Image.file(f, width: imgSize, height: imgSize);
       imgBar.add(w);
     }
     
@@ -83,12 +86,18 @@ class _NewPost extends State<NewPost> {
   }
 
   // Add image function
-  void _addImage() {
-    Navigator.of(context).push(new MaterialPageRoute(
+  Future _addImage() async {
+    // Redirect to image selection page and wait for return value
+    var img = await Navigator.of(context).push(new MaterialPageRoute(
             builder: (ctx) => new ImagePickerPage()));
-    // setState(() {
-    //   imageFiles.add(new File(""));
-    // });
+    
+    // Save the returned image to the image array
+    setState(() {
+      imageFiles.add(img);
+    });
+
+    // Debug
+    print("Returning from image selection page, img: $img");
   }
 
   @override
@@ -127,9 +136,7 @@ class _NewPost extends State<NewPost> {
               children: _buildImageBar()
             ),
             new RaisedButton(
-              onPressed: () {
-                _addImage();
-              },
+              onPressed: _addImage,
               child: new Text('Add Images - (Up to 5)'),
             ),
             new RaisedButton(
