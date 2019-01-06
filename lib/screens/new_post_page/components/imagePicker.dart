@@ -27,7 +27,9 @@ class _ImagePickerPage extends State<ImagePickerPage> {
   }
 
   void _imageConfirm() {
-    Navigator.pop(context, _image);
+    if (_image != null) {
+      Navigator.pop(context, _image);
+    }
   }
 
   @override

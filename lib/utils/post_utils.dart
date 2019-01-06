@@ -5,6 +5,9 @@ import 'package:hello_world/models/user.dart';
 import 'package:hello_world/utils/auth_utils.dart';
 import 'package:intl/intl.dart';
 import 'package:hello_world/utils/configs.dart';
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:path/path.dart';
 
 class PostUtils {
   static int page = 0;
@@ -94,18 +97,39 @@ class PostUtils {
     return _newPosts;
   }
 
-  static Future<bool> createNewPost(String title, String content) async {
-    var url = "${Configs.baseUrl}/post";
-    print(AuthUtils.authToken);
-    // Http request
-    http.Response res = await http.post(url, body: {"title": title, "content": content}, 
-      headers: {"Authorization": 'Bearer ${AuthUtils.authToken}'});
+  static Future<bool> createNewPost(String title, String content, [List<File> imgs]) async {
+    var url = "${Configs.baseUrl}";
 
-    // Parse return JSON
-    var res_obj = json.decode(res.body);
+    Options options = new Options(
+      baseUrl: url,
+      headers: {
+        'Authorization': 'Bearer ${AuthUtils.authToken}'
+      }
+    );
+
+    // Using dio for easy file upload operation
+    Dio dio = new Dio(options);
+    List<UploadFileInfo> upFiles = [];
+
+    // Set up file upload list
+    if (imgs != null) {
+      for (var i = 0; i < imgs.length; i++) {
+        upFiles.add(new UploadFileInfo(imgs[i], basename(imgs[i].path)));
+      }
+    }
+
+    // Fillout the form data
+    FormData formData = new FormData.from({
+      "title": title,
+      "content": content,
+      "imgs": upFiles
+    });
+
+    // Http request
+    var res = await dio.post('/post', data: formData);
     
     // Error handling
-    if (res_obj['status'] == 'Success') {
+    if (res.data['status'] == 'Success') {
       return true;
     }
 

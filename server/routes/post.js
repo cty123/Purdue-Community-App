@@ -77,7 +77,7 @@ router.get("/", async (req, res, next) => {
 router.post("/", upload, async (req, res, next) => {
   // Get parsed parameters
   const { title, content } = req.body;
-
+  console.log(req.body);
   // Get user
   let user = req.user;
 

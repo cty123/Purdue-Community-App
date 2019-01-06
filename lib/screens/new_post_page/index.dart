@@ -31,10 +31,6 @@ class _NewPost extends State<NewPost> {
 
     // Initialize image file list
     imageFiles = new List();
-
-    // // For testing purposes
-    // imageFiles.add(new File('assets/images/icons8-plus-50.png'));
-    // imageFiles.add(new File('assets/images/icons8-plus-50.png'));
   }
 
   List<Widget> _buildImageBar() {
@@ -60,7 +56,7 @@ class _NewPost extends State<NewPost> {
   void _onSubmit() async {
     try {
       // Get result boolean value
-      bool res = await PostUtils.createNewPost(title, content);
+      bool res = await PostUtils.createNewPost(title, content, imageFiles);
 
       // Check if the post is created successfully
       if (res) {
@@ -92,9 +88,11 @@ class _NewPost extends State<NewPost> {
             builder: (ctx) => new ImagePickerPage()));
     
     // Save the returned image to the image array
-    setState(() {
-      imageFiles.add(img);
-    });
+    if (img != null) {
+      setState(() {
+        imageFiles.add(img);
+      });
+    }
 
     // Debug
     print("Returning from image selection page, img: $img");
