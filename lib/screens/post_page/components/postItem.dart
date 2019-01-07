@@ -7,12 +7,36 @@ class PostItem extends StatelessWidget {
 
   PostItem(this.post);
 
-  void _post_detail(BuildContext ctx) {
-    Navigator.of(ctx).push(
-      new MaterialPageRoute(
-        builder: (ctx) => new PostDetail(post)
-      )
-    );
+  void _postDetail(BuildContext ctx) {
+    Navigator.of(ctx)
+        .push(new MaterialPageRoute(builder: (ctx) => new PostDetail(post)));
+  }
+
+  List<Widget> _buildImageBar(BuildContext context) {
+    // Construct the list bar
+    List<Widget> imgBar = new List();
+
+    // Define size of each image
+    double imgSize = (MediaQuery.of(context).size.width - 32) / 3;
+
+    // Loop through the image list and the maximum loop count is 3
+    int c = 0;
+    while (c < post.image_urls.length && c < 3) {
+      // Construct individual image square
+      Container temp_c = new Container(
+        padding: EdgeInsets.only(left: 8.0),
+        width: imgSize,
+        child: Image.network(post.image_urls[c], fit: BoxFit.cover),
+      );
+
+      // Add Image square to the widget list
+      imgBar.add(temp_c);
+
+      // Increment counter
+      c++;
+    }
+
+    return imgBar;
   }
 
   @override
@@ -21,7 +45,7 @@ class PostItem extends StatelessWidget {
         padding: new EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
         child: GestureDetector(
             onTap: () {
-              _post_detail(context);
+              _postDetail(context);
             },
             child: Card(
               child: Column(
@@ -65,8 +89,8 @@ class PostItem extends StatelessWidget {
                       '${post.content}',
                       maxLines: 5,
                       style: TextStyle(
-                          fontSize: 16.0,
-                          fontFamily: 'RobotoMono',
+                        fontSize: 16.0,
+                        fontFamily: 'RobotoMono',
                       ),
                     ),
                   ),
@@ -83,29 +107,7 @@ class PostItem extends StatelessWidget {
                     padding: EdgeInsets.only(top: 8.0, right: 8.0),
                     height: 150,
                     child: Row(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(left: 8.0),
-                          width: (MediaQuery.of(context).size.width - 32) / 3,
-                          child: Image.network(
-                              'https://raw.githubusercontent.com/flutter/website/master/src/_includes/code/layout/lakes/images/lake.jpg',
-                              fit: BoxFit.cover),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 8.0),
-                          width: (MediaQuery.of(context).size.width - 32) / 3,
-                          child: Image.network(
-                              'https://raw.githubusercontent.com/flutter/website/master/src/_includes/code/layout/lakes/images/lake.jpg',
-                              fit: BoxFit.cover),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(left: 8.0),
-                          width: (MediaQuery.of(context).size.width - 32) / 3,
-                          child: Image.network(
-                              'https://raw.githubusercontent.com/flutter/website/master/src/_includes/code/layout/lakes/images/lake.jpg',
-                              fit: BoxFit.cover),
-                        ),
-                      ],
+                      children: _buildImageBar(context)
                     ),
                   ),
                   Container(

@@ -12,7 +12,12 @@ import 'package:path/path.dart';
 class PostUtils {
   static int page = 0;
 
-  static pullPosts() async {
+  /*
+   * This function pull the latest page of the posts
+   * @params NONE
+   * @Return Future<List<Post>>
+   */
+  static Future<List<Post>> pullPosts() async {
     var url = "${Configs.baseUrl}/post";
     
     // Wait for HTTP response
@@ -44,8 +49,14 @@ class PostUtils {
       var date = DateTime.parse(p['date']);
       var strdate = new DateFormat.yMMMMd("en_US").format(date);
 
+      // Parse Images to strings
+      List<String> images = new List();
+      for(var i in p['images']) {
+        images.add('${Configs.baseUrl}/uploads/${i.toString()}');
+      }
+
       // Parse post object
-      Post new_post = Post(p['_id'], p['title'], p['content'], 'avatar', ['url1'], u, p['comments'].length, strdate);
+      Post new_post = Post(p['_id'], p['title'], p['content'], 'avatar', images, u, p['comments'].length, strdate);
 
       // Add the post in the post array
       _newPosts.add(new_post);
@@ -54,7 +65,12 @@ class PostUtils {
     return _newPosts;
   }
 
-  static pullMore() async {
+  /*
+   * This function pull the post on the very next page(relative to current page)
+   * @params NONE
+   * @Return Future<List<Post>> 
+   */
+  static Future<List<Post>> pullMore() async {
     // Construct return postarray
     List<Post> _newPosts = [];
 
