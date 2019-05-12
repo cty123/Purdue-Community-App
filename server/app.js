@@ -12,7 +12,7 @@ var app = express();
 var mongoose = require('mongoose');
 const passport = require('passport');
 
-mongoose.connect('mongodb://localhost/myapp');
+mongoose.connect('mongodb://cs407:407iquest@cluster0-shard-00-00-mrvao.mongodb.net:27017,cluster0-shard-00-01-mrvao.mongodb.net:27017,cluster0-shard-00-02-mrvao.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true', { useNewUrlParser: true });
 require('./passport');
 
 // view engine setup
