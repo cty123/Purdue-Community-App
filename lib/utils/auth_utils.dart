@@ -5,13 +5,12 @@ import 'dart:convert';
 import 'package:hello_world/utils/configs.dart';
 
 class AuthUtils {
-
   // Keys to store and fetch data from SharedPreferences
   static final String authTokenKey = 'auth_token';
   static final String userIdKey = 'user_id';
   static final String nameKey = 'name';
   static final String passKey = 'pass';
-
+  
   // Stores the authentication token
   static String authToken;
   static String username;
@@ -38,10 +37,15 @@ class AuthUtils {
   }
 
   static logoff(SharedPreferences prefs) {
+    // Clear login infos after logging out
     prefs.clear();
   }
 
+  /**
+   * Register with username, password and email
+   */
   static register(String username, String password, String email) async {
+    // Define address and send json to the server
     var url = "${Configs.baseUrl}/users/register";
     try {
       http.Response res = await http.post(url, body: {"username": username, "password": password, "email": email});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_world/models/post.dart';
 import 'package:hello_world/models/user.dart';
 import 'package:hello_world/models/comment.dart';
-import 'package:hello_world/screens/comment_view_page/components/commentitem.dart';
+import 'package:hello_world/screens/Post/comments/comment_view_page/commentitem.dart';
 import 'package:hello_world/utils/comment_util.dart';
 import 'package:loadmore/loadmore.dart';
 

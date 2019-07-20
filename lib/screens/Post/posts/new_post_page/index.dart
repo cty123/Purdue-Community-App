@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_world/utils/post_utils.dart';
 import 'package:hello_world/components/dialog.dart';
 import 'dart:io';
-import 'package:hello_world/screens/new_post_page/components/imagePicker.dart';
+import 'package:hello_world/screens/Post/posts/new_post_page/components/imagePicker.dart';
 
 class NewPost extends StatefulWidget {
   // Create state object

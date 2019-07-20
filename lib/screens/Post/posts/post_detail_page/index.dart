@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/post.dart';
-import 'package:hello_world/screens/post_edit_page/index.dart';
-import 'package:hello_world/screens/comment_post_page/index.dart';
-import 'package:hello_world/screens/comment_view_page/index.dart';
+import 'package:hello_world/screens/Post/posts/post_edit_page/index.dart';
+import 'package:hello_world/screens/Post/comments/comment_post_page/index.dart';
+import 'package:hello_world/screens/Post/comments/comment_view_page/index.dart';
 import 'package:hello_world/components/popmenuitem.dart';
 
 class PostDetail extends StatefulWidget {

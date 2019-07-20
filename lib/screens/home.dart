@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/screens/homepage.dart';
-import 'package:hello_world/screens/post_page/index.dart';
-import 'package:hello_world/screens/setting_page/index.dart';
+import 'package:hello_world/screens/Home/index.dart';
+import 'package:hello_world/screens/Post/posts/post_page/index.dart';
+import 'package:hello_world/screens/Profile/index.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
 
- @override
- _Home createState() => new _Home();
+  @override
+  _Home createState() => new _Home();
 }
 
 class _Home extends State<Home> {
@@ -20,26 +20,13 @@ class _Home extends State<Home> {
   ];
 
   @override
-	void initState() {
-		super.initState();
-		_fetchSessionAndNavigate();
-	}
-
-  _fetchSessionAndNavigate() async {
-    // Check local preference for user
-
-  }
-
-  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       body: Center(
        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex, 
-        fixedColor: Colors.brown,
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
